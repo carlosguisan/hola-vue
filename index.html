@@ -7,17 +7,19 @@
     <title>Document</title>
 </head>
 <body>
-    <div id="app">
-        {{ text }}
-    </div>
+    <!--Este <div> empieza a formar parte del componente principal, es nuestra vista o template-->
+    <div id="app"></div>
     <script src="https://unpkg.com/vue@3"></script>
+    <!--Estamos trabajando con el Options API-->
+    <!--Podemos usar template para reemplazar {{ }} en el div del componente principal y/o usar directivas para mostrar el valor-->
     <script>
        const vm = Vue.createApp({
            data(){
                return {
                    text: "Hola Vue"
                };
-           }
+           },
+           template: `<div v-text="text"></div>`
        }).mount("#app"); 
        console.log(vm);
     </script>
