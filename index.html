@@ -13,20 +13,26 @@
     <!--Estamos trabajando con el Options API-->
     <!--Podemos usar template para reemplazar {{ }} en el div del componente principal y/o usar directivas para mostrar el valor-->
     <script>
-       const vm = Vue.createApp({
-           data(){
-               return {
-                    counter: 0
-               };
-           },
-           methods: {
-               increment(){
-                   this.counter++;
-               }
-           },
-           template: `<button v-on:keyup="increment"> {{ counter }} </button>`
-       }).mount("#app"); 
-       console.log(vm);
+const vm = Vue.createApp({
+    data(){
+        return {
+            counter: 0
+        };
+    },
+    methods: {
+        plus(){
+            if (this.counter >= 0) {
+                this.counter++;
+            }
+        },
+        minus(){
+            if (this.counter > 0) {
+                this.counter--;
+            }
+        }
+    },
+    template: `<h1>Contador: {{ counter }}</h1><button v-on:click="plus"> + Incrementar </button> <button v-on:click="minus"> - Reducir </button>`
+}).mount("#app");
     </script>
 </body>
 </html>
