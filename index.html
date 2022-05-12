@@ -16,23 +16,14 @@
         const vm = Vue.createApp({
             data(){
                 return {
-                    counter: 0
+                    text: "Hola Vue"
                 };
             },
-            methods: {
-                plus(){
-                    if (this.counter >= 0) {
-                        this.counter++;
-                    }
-                },
-                minus(){
-                    if (this.counter > 0) {
-                        this.counter--;
-                    }
-                }
-            },
-            template: `<h1>Contador: {{ counter }}</h1><button v-on:click="plus"> + Incrementar </button> <button v-on:click="minus"> - Reducir </button>`
+            template: `
+                <p>{{ text }}</p>
+                <input type="text" v-model="text">
+            `
         }).mount("#app");
-    </script>
+    </script>    
 </body>
 </html>
