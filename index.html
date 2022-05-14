@@ -44,8 +44,43 @@
         .title {
             font-weight: 700;
             font-size: 1.2rem;
-            margin-top: 1rem    ;
+            margin-top: 1rem;
             margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .new-post{
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+            background: rgba(255,255,255,.5);
+            border-radius: 13px;
+            margin-bottom: 15px;
+        }
+
+        .new-post-heading{
+            margin-top: 5px;
+            margin-bottom: 10px;
+            color: #144002;
+        }
+
+        .new-post-title{
+            margin-bottom: 9px;
+        }
+
+        .item-remove{
+            color: red;
+            text-decoration: none;
+            font-weight: 400;
+            font-size: 15px;
+        }
+
+        .new-post-publish{
+            margin-top: 15px;
+            background-color: #70b951;
+            color: #052405;
+            font-weight: 600;
         }
     </style>
 </head>
@@ -79,8 +114,27 @@
                             title: "Titulo 4",
                             description : "Lorem ipsum..."
                         }
-                    ]
+                    ],
+                    newPost: {
+                        title: '',
+                        description: ''
+                    }
                 };
+            },
+            methods: {
+                addPost() {
+                    const setPost = [];
+                    if ( ( this.newPost.title != "" ) && (this.newPost.description != "") ) {
+                        setPost['title'] = this.newPost.title;
+                        setPost['description'] = this.newPost.description;
+                        this.posts.push(setPost);
+                        this.newPost.title = "";
+                        this.newPost.description = "";
+                    }
+                },
+                removePost(i){
+                    this.posts.splice(i, 1);
+                }
             },
             watch : {
                 open(value){
@@ -104,10 +158,16 @@
                 <div class="container" :class="styles">
                     <h2>{{ text }}</h2>
                     <div v-if="open">
-                        <p>Hola, {{ username }} </p>                        
+                        <p>Hola, {{ username }} </p>
+                        <div class="new-post">
+                            <h4 class="new-post-heading">Agregar nueva publicación</h4>                            
+                            <input type="text" placeholder="Título de la publicación" class="new-post-title" v-model="newPost.title">
+                            <textarea placeholder="Descripción" v-model="newPost.description"></textarea>
+                            <button class="new-post-publish" @click="addPost">Publicar</button>
+                        </div>
                         <div class="list">
                             <div v-for="(item, i) in posts" :key="i" class="item">
-                                <h4 class="title">{{ item.title }}</h4>
+                                <h4 class="title">{{ item.title }} <a href="javascript:void(0)" class="item-remove" @click="removePost(i)">X</a></h4>
                                 <p>{{ item.description }}</p>
                             </div>
                         </div>
