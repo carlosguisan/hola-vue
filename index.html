@@ -91,7 +91,8 @@
     <!--Estamos trabajando con el Options API-->
     <!--Podemos usar template para reemplazar {{ }} en el div del componente principal y/o usar directivas para mostrar el valor-->
     <script>
-        const vm = Vue.createApp({
+        //Creamos la vista de vue en la variable app, para poder agregarle componentes
+        const app = Vue.createApp({
             data(){
                 return {
                     text : "Accede a tu cuenta",
@@ -166,10 +167,8 @@
                             <button class="new-post-publish" @click="addPost">Publicar</button>
                         </div>
                         <div class="list">
-                            <div v-for="(item, i) in posts" :key="i" class="item">
-                                <h4 class="title">{{ item.title }} <a href="javascript:void(0)" class="item-remove" @click="removePost(i)">X</a></h4>
-                                <p>{{ item.description }}</p>
-                            </div>
+                            <!--Con :prop el componente principal le pasa al componente item la info que necesita mostrar, y lo podemos nombrar como lo necesitemos-->
+                            <item v-for="(item, i) in posts" :key="i" :post="item" />
                         </div>
                     </div>
                     <div v-else>
@@ -179,7 +178,22 @@
                     <button @click="open = !open">{{ label }}</button>
                 </div>
             `
-        }).mount("#app");
+        })
+        //Creamos el componente, con .component.. Recibe como parametros el nombre del componente y lo que hará el componente en un objeto JSON
+
+        app.component('item', {
+            //Con props obtenemos del componente principal que vamos a mostrar en este modulo
+            props: ['post'],
+            template: `
+                <div class="item">
+                    <h4 class="title">{{ post.title }} <a href="javascript:void(0)" class="item-remove" @click="removePost(i)">X</a></h4>
+                    <p>{{ post.description }}</p>
+                </div>
+            `
+        });
+
+        //Montamos la vista de Vue que esta en App, en la variable vm
+        const vm = app.mount("#app");
     </script>    
 </body>
 </html>
