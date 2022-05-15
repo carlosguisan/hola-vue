@@ -5,84 +5,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Platzi | Curso de Vue: Introducción y fundamentos</title>
-    <style>
-        html, body {
-            height: 100vh;
-            margin: 0;
-            font-family: Arial, Helvetica, sans-serif;
-        }
-        #app, .container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            width: 100%;
-            height: 100%;
-        }
-        button {
-            margin-top: 24px;
-            border: none;
-            background-color: white;
-            padding: 8px 24px;
-            border-radius: 12px;
-        }
-        .closed {
-            background-color: #eca1a6;
-        }
-        .open {
-            background-color: #b5e7a0;
-        }
-        .list {
-            display: flex;
-            flex-direction: column;
-            border-top: 1px solid #41af14;
-        }
-        .item {
-            border-bottom: 1px solid #41af14;
-        }
-
-        .title {
-            font-weight: 700;
-            font-size: 1.2rem;
-            margin-top: 1rem;
-            margin-bottom: 1rem;
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .new-post{
-            display: flex;
-            flex-direction: column;
-            padding: 10px;
-            background: rgba(255,255,255,.5);
-            border-radius: 13px;
-            margin-bottom: 15px;
-        }
-
-        .new-post-heading{
-            margin-top: 5px;
-            margin-bottom: 10px;
-            color: #144002;
-        }
-
-        .new-post-title{
-            margin-bottom: 9px;
-        }
-
-        .item-remove{
-            color: red;
-            text-decoration: none;
-            font-weight: 400;
-            font-size: 15px;
-        }
-
-        .new-post-publish{
-            margin-top: 15px;
-            background-color: #70b951;
-            color: #052405;
-            font-weight: 600;
-        }
-    </style>
 </head>
 <body>
     <!--Este <div> empieza a formar parte del componente principal, es nuestra vista o template-->
@@ -92,108 +14,35 @@
     <!--Podemos usar template para reemplazar {{ }} en el div del componente principal y/o usar directivas para mostrar el valor-->
     <script>
         //Creamos la vista de vue en la variable app, para poder agregarle componentes
-        const app = Vue.createApp({
-            data(){
-                return {
-                    text : "Accede a tu cuenta",
-                    open : false,
-                    username : "",
-                    posts : [
-                        {
-                            title: "Titulo 1",
-                            description : "Lorem ipsum..."
-                        },
-                        {
-                            title: "Titulo 2",
-                            description : "Lorem ipsum..."
-                        },
-                        {
-                            title: "Titulo 3",
-                            description : "Lorem ipsum..."
-                        },
-                        {
-                            title: "Titulo 4",
-                            description : "Lorem ipsum..."
-                        }
-                    ],
-                    newPost: {
-                        title: '',
-                        description: ''
-                    }
-                };
-            },
-            methods: {
-                addPost() {
-                    const setPost = [];
-                    if ( ( this.newPost.title != "" ) && (this.newPost.description != "") ) {
-                        setPost['title'] = this.newPost.title;
-                        setPost['description'] = this.newPost.description;
-                        this.posts.push(setPost);
-                        this.newPost.title = "";
-                        this.newPost.description = "";
-                    }
-                },
-                removePost(i){
-                    this.posts.splice(i, 1);
-                }
-            },
-            watch : {
-                open(value){
-                    if (value) {
-                        this.text = "Cierra sesión";
-                    } else {
-                        this.text = "Accede a tu cuenta";
-                        this.username = '';
-                    }
-                }
-            },
-            computed: {
-                label(){
-                    return this.open ? "Salir" : "Acceder";
-                },
-                styles(){
-                    return this.open ? 'open' : 'closed';
-                }
-            },
+        const app = Vue.createApp({            
             template: `
-                <div class="container" :class="styles">
-                    <h2>{{ text }}</h2>
-                    <div v-if="open">
-                        <p>Hola, {{ username }} </p>
-                        <div class="new-post">
-                            <h4 class="new-post-heading">Agregar nueva publicación</h4>                            
-                            <input type="text" placeholder="Título de la publicación" class="new-post-title" v-model="newPost.title">
-                            <textarea placeholder="Descripción" v-model="newPost.description"></textarea>
-                            <button class="new-post-publish" @click="addPost">Publicar</button>
-                        </div>
-                        <div class="list">
-                            <!--Con :prop el componente principal le pasa al componente item la info que necesita mostrar, y lo podemos nombrar como lo necesitemos-->
-                            <item v-for="(item, i) in posts" :key="i" :post="item" />
-                        </div>
-                    </div>
-                    <div v-else>
-                        <div>Username</div>
-                        <input type="text" v-model="username">
-                    </div>
-                    <button @click="open = !open">{{ label }}</button>
+                <div>
+                    <v-layout>
+                        <template v-slot:header>
+                            <button>Titulo</button>
+                        </template>
+                        <template v-slot:content>
+                            Lorem ipsum dolor sit amet
+                        </template>
+                    </v-layout>
                 </div>
             `
-        })
-        //Creamos el componente, con .component.. Recibe como parametros el nombre del componente y lo que hará el componente en un objeto JSON
-
-        app.component('item', {
-            //Con props obtenemos del componente principal que vamos a mostrar en este modulo
-            props: ['post'],
-            template: `
-                <div class="item">
-                    <h4 class="title">{{ post.title }} <a href="javascript:void(0)" class="item-remove" @click="removePost(i)">X</a></h4>
-                    <p>{{ post.description }}</p>
+        });
+        
+        //A la hora de nombrar componentes, se suele usar la nomenclatura v-[nombre del componente]
+        app.component("v-layout", {
+            template : `
+                <header>
+                    <slot name="header"></slot>
+                </header>
+                <div>
+                    <slot name="content"></slot>
                 </div>
             `
         });
 
         //Montamos la vista de Vue que esta en App, en la variable vm
         const vm = app.mount("#app");
-    </script>    
+    </script>
 </body>
 </html>
