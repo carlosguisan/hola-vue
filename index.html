@@ -20,23 +20,31 @@
                     items: ["uno", "dos", "tres"]
                 }
             },
+            methods: {
+                remove(i){
+                    const items = this.items.filter((el, index) => index !== i);
+                    this.items = items;
+                }
+            },
+            //Para escuchar cambios del componente hijo al padre, creamos un evento personalizado (remove)
             template: `
                 <ul>
-                    <v-item v-for="item in items" v-bind:text="item"></v-item>
+                    <v-item v-for="(item, i) in items" v-bind:text="item" v-on:remove="remove(i)"></v-item>
                 </ul>
             `
         });
-        //En lugar de usar <slots>, podemos usar props para obtener info del componente principal y/o de otros components
-        //Lo definimos como lista u objeto (buena práctica), y declarando el tipo de dato. (String)
-        //Tambien podemos crear un objeto en lugar del tipo de dato para definir un valor por defecto:
-        // { default: "Dato por defecto"}
+        //Dentro del componente, creamos una funcion donde definiremos el evento personalizado que escuchará el componente principal, con this.$emit
+        //Tmb podemos usarlo para pasarle un valor si se requiere actualizar algun dato en el componente principal
         app.component("v-item", {
             props: {
-                text: {
-                    default: "Texto vacío"
+                text: String
+            },
+            methods: {
+                rm(){
+                    this.$emit("remove");
                 }
             },
-            template: `<li>{{ text }}</li>`
+            template: `<li v-on:click="rm">{{ text }}</li>`
         });
 
         //Montamos la vista de Vue que esta en App, en la variable vm
