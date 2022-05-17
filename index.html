@@ -15,38 +15,38 @@
     <script>
         //Creamos la vista de vue en la variable app, para poder agregarle componentes
         const app = Vue.createApp({
-            data (){
+            data(){
                 return {
-                    items: ["uno", "dos", "tres"]
+                    text: "Hola Vue"
                 }
             },
-            methods: {
-                remove(i){
-                    const items = this.items.filter((el, index) => index !== i);
-                    this.items = items;
+            methods : {
+                //Capturamos mediante el evento personalizado update la info del value componente hijo para actualizar text
+                input(e){
+                    this.text = e;
                 }
             },
-            //Para escuchar cambios del componente hijo al padre, creamos un evento personalizado (remove)
             template: `
-                <ul>
-                    <v-item v-for="(item, i) in items" v-bind:text="item" v-on:remove="remove(i)"></v-item>
-                </ul>
-            `
+                <div>
+                    <p>{{ text }}</p>
+                    <v-input v-bind:value="text" v-on:update="input"/>
+                </div>
+            `    
         });
-        //Dentro del componente, creamos una funcion donde definiremos el evento personalizado que escuchará el componente principal, con this.$emit
-        //Tmb podemos usarlo para pasarle un valor si se requiere actualizar algun dato en el componente principal
-        app.component("v-item", {
+       
+        app.component("v-input", {
             props: {
-                text: String
+                value: String
             },
             methods: {
-                rm(){
-                    this.$emit("remove");
+                //Mediante este evento personalizado y $emit enviamos los cambios que se dan en el input del componente hijo al padre,
+                //para actualizarlo en el componente padre
+                input(e){
+                    this.$emit("update", e.target.value);
                 }
             },
-            template: `<li v-on:click="rm">{{ text }}</li>`
+            template : `<input type="text" v-bind:value="value" v-on:input="input"/>`
         });
-
         //Montamos la vista de Vue que esta en App, en la variable vm
         const vm = app.mount("#app");
     </script>
