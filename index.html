@@ -35,7 +35,7 @@
             methods: {
                 //Mediante este evento personalizado y $emit enviamos los cambios que se dan en el input del componente hijo al padre,
                 //para actualizarlo en el componente padre
-                //Como estamos usando v-model, además del nombre del evento personalizado tenemos que añadir después del : el nombre del
+                //Como estamos usando v-model, en el nombre del evento personalizado tenemos que añadir update y después del : el nombre del
                 //prop que vamos a sincronizar (en este caso, value)
                 input(e){
                     this.$emit("update:value", e.target.value);
