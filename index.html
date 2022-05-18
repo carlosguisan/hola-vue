@@ -19,33 +19,20 @@
                 return {
                     text: "Hola Vue"
                 }
-            },         
-            provide() {
-                return {
-                    otroTexto: this.text
-                }
-            },   
+            },
             template: `
-                <div>{{ text }}</div>
-                <v-otro />
-            `    
+                <v-button ref="elemento" :label="text"></v-button>
+            `
+        });
+
+        app.component('v-button', {
+            props: ["label"],
+            template: `<button>{{ label }}</button>`
         });
        
-
-        app.component("v-otro", {
-            template : `<v-tercer />`
-        });
-
-        app.component("v-tercer", {
-            inject: {
-                otroTexto: {
-                    from: "otroTexto"
-                }
-            },
-            template : `<div>{{ otroTexto }}</div>`
-        });
         //Montamos la vista de Vue que esta en App, en la variable vm
         const vm = app.mount("#app");
+        console.log(vm.$props);
     </script>
 </body>
 </html>
